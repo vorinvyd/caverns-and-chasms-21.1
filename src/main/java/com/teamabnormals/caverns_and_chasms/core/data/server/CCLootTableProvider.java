@@ -174,6 +174,7 @@ public class CCLootTableProvider extends LootTableProvider {
 			this.dropSelf(RAW_SILVER_BLOCK.get());
 			this.dropSelf(MEDIUM_WEIGHTED_PRESSURE_PLATE.get());
 			this.dropSelf(SILVER_BARS.get());
+			this.dropSelf(SILVER_CHAIN.get());
 			this.dropSelf(BRAZIER.get());
 			this.dropSelf(SOUL_BRAZIER.get());
 			this.dropSelf(ENDER_BRAZIER.get());
@@ -232,6 +233,7 @@ public class CCLootTableProvider extends LootTableProvider {
 
 			this.dropSelf(LAVA_LAMP.get());
 			this.dropSelf(GOLDEN_BARS.get());
+			this.dropSelf(GOLDEN_CHAIN.get());
 
 			this.dropSelf(FLOODLIGHT.get());
 			this.dropSelf(EXPOSED_FLOODLIGHT.get());
@@ -347,7 +349,7 @@ public class CCLootTableProvider extends LootTableProvider {
 			this.blockFamily(SMOOTH_TUFF_FAMILY);
 			this.dropSelf(TUFF_PILLAR.get());
 
-			this.dropSelf(SHALE.get());
+			this.blockFamily(SHALE_FAMILY);
 			this.blockFamily(SMOOTH_SHALE_FAMILY);
 			this.dropSelf(SHALE_PILLAR.get());
 
@@ -388,6 +390,7 @@ public class CCLootTableProvider extends LootTableProvider {
 
 			this.dropSelf(SMOOTH_BASALT_STAIRS.get());
 			this.add(SMOOTH_BASALT_SLAB.get(), this::createSlabItemTable);
+			this.dropSelf(SMOOTH_BASALT_WALL.get());
 			this.blockFamily(BASALT_BRICKS_FAMILY);
 			this.blockFamily(BASALT_TILES_FAMILY);
 

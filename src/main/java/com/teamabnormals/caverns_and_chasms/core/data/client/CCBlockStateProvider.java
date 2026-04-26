@@ -55,7 +55,6 @@ public class CCBlockStateProvider extends BlueprintBlockStateProvider {
 		this.block(CYLINDRITE_TIN_ORE);
 		this.block(CASSITERITE_TIN_ORE);
 		this.block(TIN_BLOCK);
-		this.tinChainBlock(TIN_CHAIN);
 		this.tinBulbBlock(TIN_BULB);
 		this.block(FLOAT_GLASS);
 		this.glassPaneBlock(FLOAT_GLASS_PANE, FLOAT_GLASS);
@@ -214,6 +213,7 @@ public class CCBlockStateProvider extends BlueprintBlockStateProvider {
 		this.logBlock(TUFF_PILLAR);
 
 		this.logBlock(SHALE);
+		this.pillarBlockFamily(SHALE_FAMILY);
 		this.blockFamily(SMOOTH_SHALE_FAMILY);
 		this.logBlock(SHALE_PILLAR);
 
@@ -253,6 +253,7 @@ public class CCBlockStateProvider extends BlueprintBlockStateProvider {
 
 		this.stairsBlock(Blocks.SMOOTH_BASALT, SMOOTH_BASALT_STAIRS.get());
 		this.slabBlock(Blocks.SMOOTH_BASALT, SMOOTH_BASALT_SLAB.get());
+		this.wallBlock(Blocks.SMOOTH_BASALT, SMOOTH_BASALT_WALL.get());
 		this.logBlock(BASALT_BRICKS);
 		this.pillarBlockFamily(BASALT_BRICKS_FAMILY);
 		this.logBlock(CHISELED_BASALT_BRICKS);
@@ -287,9 +288,14 @@ public class CCBlockStateProvider extends BlueprintBlockStateProvider {
 		this.ironBarsBlock(WAXED_EXPOSED_COPPER_BARS);
 		this.ironBarsBlock(WAXED_WEATHERED_COPPER_BARS);
 		this.ironBarsBlock(WAXED_OXIDIZED_COPPER_BARS);
+
 		this.ironBarsBlock(GOLDEN_BARS);
 		this.ironBarsBlock(SILVER_BARS);
 		this.ironBarsBlock(TIN_BARS);
+
+		this.customChainBlock(GOLDEN_CHAIN, "template_golden_chain");
+		this.customChainBlock(SILVER_CHAIN, "template_copper_chain");
+		this.customChainBlock(TIN_CHAIN, "template_tin_chain");
 
 		this.toolboxBlocks(TOOLBOX, WAXED_TOOLBOX, Blocks.COPPER_BLOCK);
 		this.toolboxBlocks(EXPOSED_TOOLBOX, WAXED_EXPOSED_TOOLBOX, Blocks.EXPOSED_COPPER);
@@ -667,9 +673,9 @@ public class CCBlockStateProvider extends BlueprintBlockStateProvider {
 		this.generatedItem(block, "item");
 	}
 
-	public void tinChainBlock(DeferredBlock<Block> chainBlock) {
+	public void customChainBlock(DeferredBlock<Block> chainBlock, String parent) {
 		Block block = chainBlock.get();
-		ModelFile chain = models().withExistingParent(name(block), CavernsAndChasms.MOD_ID + ":block/template_tin_chain").texture("all", blockTexture(block)).renderType("cutout");
+		ModelFile chain = models().withExistingParent(name(block), CavernsAndChasms.MOD_ID + ":block/" + parent).texture("all", blockTexture(block)).renderType("cutout");
 		this.getVariantBuilder(block).forAllStatesExcept(state -> {
 			Axis axis = state.getValue(BlockStateProperties.AXIS);
 			return ConfiguredModel.builder().modelFile(chain).rotationX(axis.isHorizontal() ? 90 : 0).rotationY(axis == Axis.X ? 90 : 0).build();
