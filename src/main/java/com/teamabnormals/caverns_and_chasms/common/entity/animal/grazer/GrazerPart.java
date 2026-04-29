@@ -1,6 +1,7 @@
 package com.teamabnormals.caverns_and_chasms.common.entity.animal.grazer;
 
-import com.teamabnormals.caverns_and_chasms.core.other.CCUtil;
+import com.teamabnormals.caverns_and_chasms.core.other.CCProjectileUtil;
+import com.teamabnormals.caverns_and_chasms.core.other.tags.CCEntityTypeTags;
 import com.teamabnormals.caverns_and_chasms.core.registry.CCSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,6 +14,8 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
@@ -120,7 +123,7 @@ public class GrazerPart extends PartEntity<AbstractGrazer> {
 				Vec3 normal = grazer.calculateDeflectionNormal(location);
 
 				if (!this.level().isClientSide)
-					CCUtil.playRicochetEffects(this.level(), location, normal, 0.8F, CCSoundEvents.GRAZER_DEFLECT.get(), 1.0F, this.random, true);
+					CCProjectileUtil.playRicochetEffects(this.level(), location, normal, 0.8F, CCSoundEvents.GRAZER_DEFLECT.get(), this.random, true);
 
 				return false;
 			}
@@ -128,6 +131,17 @@ public class GrazerPart extends PartEntity<AbstractGrazer> {
 		return grazer.hurt(source, amount);
 	}
 
+	@Override
+	public ProjectileDeflection deflection(Projectile projectile) {
+		if (this.deflectsAttacks() && !projectile.getType().is(CCEntityTypeTags.NOT_DEFLECTED_BY_TIN)) {
+			AbstractGrazer grazer = this.getParent();
+			boolean shouldDeflect = !grazer.projectileJustDeflected(projectile);
+			grazer.addDeflectedProjectile(projectile);
+			return shouldDeflect ? CCProjectileUtil.GRAZER_DEFLECT : ProjectileDeflection.NONE;
+		} else {
+			return ProjectileDeflection.NONE;
+		}
+	}
 
 	@Override
 	public boolean isPickable() {
